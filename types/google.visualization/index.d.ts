@@ -13,6 +13,17 @@ declare namespace google {
     namespace charts {
         function load(version: string, packages: Object): void;
         function setOnLoadCallback(handler: Function): void;
+
+        class BaseChart {
+            static readonly convertOptions: (options: any) => any;
+            constructor(element: Element);
+            draw(dataTable: google.visualization.DataTable, options: any): void;
+            clearChart(): void;
+        }
+
+        class Line extends BaseChart { }
+
+        class Bar extends BaseChart { }
     }
 
     // https://developers.google.com/chart/interactive/docs/reference
@@ -44,7 +55,7 @@ declare namespace google {
             constructor(spec?: ChartSpecs);
             draw(container_ref?: HTMLElement): void;
             toJSON(): string;
-            clone():ChartWrapper;
+            clone(): ChartWrapper;
             getDataSourceUrl(): string;
             getDataTable(): DataTable;
             getChartType(): string;
@@ -205,7 +216,7 @@ declare namespace google {
 
             setRefreshInterval(intervalSeconds: number): void;
             setTimeout(timeoutSeconds: number): void;
-            setQuery(queryString:string): void;
+            setQuery(queryString: string): void;
 
             send(callback: (response: QueryResponse) => void): void;
         }
@@ -800,18 +811,16 @@ declare namespace google {
         //#region AnnotationChart
 
         // https://developers.google.com/chart/interactive/docs/gallery/annotationchart
-        export class AnnotationChart extends CoreChartBase
-        {
+        export class AnnotationChart extends CoreChartBase {
             draw(data: DataTable | DataView, options: AnnotationChartOptions): void;
             setVisibleChartRange(start: Date, end: Date): void;
-            getVisibleChartRange(): {start: Date; end: Date };
+            getVisibleChartRange(): { start: Date; end: Date };
             hideDataColumns(columnIndexes: number | number[]): void;
             showDataColumns(columnIndexes: number | number[]): void;
         }
 
         // https://developers.google.com/chart/interactive/docs/gallery/annotationchart#Configuration_Options
-        export interface AnnotationChartOptions
-        {
+        export interface AnnotationChartOptions {
             allowHtml?: boolean;
             allValuesSuffix?: string;
             annotationsWidth?: number;
@@ -1179,7 +1188,7 @@ declare namespace google {
 
         //#endregion
         //#region ControlWrapper
-        
+
         // https://developers.google.com/chart/interactive/docs/gallery/controls#controlwrapperobject
         export class ControlWrapper {
             constructor(opt_spec?: ControlWrapperOptions)
@@ -1201,7 +1210,7 @@ declare namespace google {
             setState(state_obj: Object): void;
         }
 
-        export interface ControlWrapperOptions {        
+        export interface ControlWrapperOptions {
             controlType: string;
             containerId: string;
             options?: Object;
@@ -1290,7 +1299,7 @@ declare namespace google {
             zoomLevel?: number;
         }
 
-        //#endregion         
+        //#endregion
         //#region Events
 
         namespace events {
@@ -1526,5 +1535,7 @@ declare namespace google {
         }
 
         //#endregion
+
+        class Sankey extends google.charts.BaseChart { }
     }
 }
